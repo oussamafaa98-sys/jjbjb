@@ -3,130 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site de OUSSAMA POUR LE BANANE Banane 🍌</title>
+    <title>Chronomètre</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #fff9e6;
-            color: #333;
-        }
-
-        header {
-            background-color: #f2c94c;
-            padding: 20px;
             text-align: center;
+            margin-top: 50px;
+            background-color: #f0f0f0;
         }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-
-        nav {
-            background-color: #f7d86a;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav a {
-            margin: 0 15px;
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            padding: 20px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .image-centre {
-            text-align: center;
+        #chrono {
+            font-size: 48px;
             margin-bottom: 20px;
         }
-
-        .image-centre img {
-            width: 300px;
-            border-radius: 15px;
-        }
-
-        section {
-            margin-bottom: 40px;
-        }
-
-        footer {
-            background-color: #f2c94c;
-            text-align: center;
-            padding: 15px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-
-        footer p {
-            margin: 0;
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <h1>Chronomètre</h1>
+    <div id="chrono">00:00:00</div>
+    <button id="startStop">Démarrer</button>
+    <button id="reset">Réinitialiser</button>
 
-    <header>
-        <h1>Bienvenue sur le site de la Banane 🍌</h1>
-        <p>Le fruit préféré des singes et des humains !</p>
-    </header>
+    <script>
+        let hours = 0;
+        let minutes = 0;
+        let seconds = 0;
+        let interval;
+        let running = false;
 
-    <nav>
-        <a href="#infos">Infos</a>
-        <a href="#bienfaits">Bienfaits</a>
-        <a href="#contact">Contact</a>
-    </nav>
+        const chrono = document.getElementById('chrono');
+        const startStopBtn = document.getElementById('startStop');
+        const resetBtn = document.getElementById('reset');
 
-    <main>
-        <div class="image-centre">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg" alt="Banane">
-        </div>
+        function updateDisplay() {
+            let h = hours.toString().padStart(2, '0');
+            let m = minutes.toString().padStart(2, '0');
+            let s = seconds.toString().padStart(2, '0');
+            chrono.textContent = `${h}:${m}:${s}`;
+        }
 
-        <section id="infos">
-            <h2>🍌 Informations sur la banane</h2>
-            <p>La banane est un fruit tropical savoureux et riche en potassium. Elle pousse sur des bananiers et est consommée dans le monde entier.</p>
-        </section>
+        function startStop() {
+            if (!running) {
+                interval = setInterval(() => {
+                    seconds++;
+                    if (seconds === 60) {
+                        seconds = 0;
+                        minutes++;
+                    }
+                    if (minutes === 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                    updateDisplay();
+                }, 1000);
+                startStopBtn.textContent = "Arrêter";
+                running = true;
+            } else {
+                clearInterval(interval);
+                startStopBtn.textContent = "Démarrer";
+                running = false;
+            }
+        }
 
-        <section id="bienfaits">
-            <h2>🌿 Bienfaits de la banane</h2>
-            <ul>
-                <li>Riche en énergie naturelle</li>
-                <li>Source de vitamines et de potassium</li>
-                <li>Améliore la digestion</li>
-                <li>Bonne pour le moral 😄</li>
-            </ul>
-        </section>
+        function reset() {
+            clearInterval(interval);
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+            updateDisplay();
+            startStopBtn.textContent = "Démarrer";
+            running = false;
+        }
 
-        <section id="contact">
-            <h2>📩 Contact</h2>
-            <p>Envie d’en savoir plus sur la banane ?</p>
-            <form>
-                <label for="email">Votre email :</label><br>
-                <input type="email" id="email" name="email" placeholder="exemple@email.com" required><br><br>
-                <label for="message">Votre message :</label><br>
-                <textarea id="message" name="message" rows="4" placeholder="Écrivez votre message ici..."></textarea><br><br>
-                <button type="submit">Envoyer</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>© 2025 Site de Banane 🍌 — Fait avec amour et potassium</p>
-    </footer>
-
+        startStopBtn.addEventListener('click', startStop);
+        resetBtn.addEventListener('click', reset);
+    </script>
 </body>
 </html>
 
-    
 
